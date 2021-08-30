@@ -1,18 +1,51 @@
-//This methofd is used to Generate Date between startdate and enddate range
-
- //@param dates startDate and EndDate
-
- //return month 1-12
- 
- function randomDate(start, end) {
-    let DOB= new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
-    console.log(DOB.getMonth())
-    return DOB.getMonth();
+function rollDice() {
+    var dice = Math.floor((Math.random() * 6)) + 1;
+    return dice;
 }
 
-birthArray=new Array(0,0,0,0,0,0,0,0,0,0,0,0,0);
-for(i=1;i<=50;i++){
-let month=randomDate(new Date(1998, 5, 25), new Date(1999, 5, 25));
-birthArray[month]=birthArray[month]+1;
+function minMax(numberArray) {
+    let arrayMap = new Map();
+    let max = numberArray[1]; let min = numberArray[1];
+    let maxArray = new Array();
+    let minArray = new Array();
+    let minIndex = 1; let maxIndex = 1;
+    for (i = 2; i < numberArray.length; i++) {
+        if (numberArray[i] <= min) {
+            min = numberArray[i];
+            minIndex = i;
+        }
+        if (numberArray[i] >= max) {
+            max = numberArray[i];
+            maxIndex = i;
+        }
+    }
+    for (i = 1; i < numberArray.length; i++) {
+        if (numberArray[maxIndex] == numberArray[i]) {
+            maxArray.push(i);
+        }
+        if (numberArray[minIndex] == numberArray[i]) {
+            minArray.push(i);
+        }
+    }
+    arrayMap.set("max", maxArray);
+    arrayMap.set("min", minArray);
+    return arrayMap;
 }
-console.log(birthArray)
+
+let diceEnries = new Map();
+for (i = 1; i <= 10; i++) {
+    diceEnries.set(i, rollDice());
+}
+
+for (let [key, value] of diceEnries.entries()) console.log("Dice" + key + ' = ' + value)
+let entryTimes = new Array(0, 0, 0, 0, 0, 0, 0);
+
+for (let value of diceEnries.values()) {
+
+    entryTimes[value] = entryTimes[value] + 1;
+}
+
+console.log(entryTimes)
+let asse = minMax(entryTimes);
+console.log("max values: " + asse.get("max") + " we got " + entryTimes[asse.get("max")[0]] + " times")
+console.log("min values: " + asse.get("min") + " we got " + entryTimes[asse.get("min")[0]] + " times")
